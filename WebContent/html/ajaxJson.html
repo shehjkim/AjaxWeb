@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>html/ajaxJson.html</title>
+</head>
+<body>
+<script>
+let json={
+		"name" : "John",
+		"age" : 30,
+		"Cars" : ["Ford", "BMW", "Fiat"]
+		
+}
+
+	let jsonObj = JSON.parse(json);
+	console.log(jsonObj);
+
+
+
+	let xhtp = new XMLHttpRequest();
+	xhtp.open('get' , '../empListJson');   //EmpListJsonServlet.java4
+	xhtp.send();						//서버에 파일요청
+	xhtp.onload = function() {
+		let data = xhtp.response;
+		let obj = JSON.parse(data);
+		let ulTag=document.createElement('ul');
+		
+		for(let i=0; i<obj.length; i++) {			//obj 길이만큼 가져옴
+			let liTag = document.createElement('li');
+			let val = obj[i].id + ',' + obj[i].firstName + //
+			',' + obj[i].lastName + ',' + //
+			obj[i].email + ',' + obj[i].salary;
+			let tNode = document.createTextNode(val);
+			liTag.appendChild(tNode);
+			ulTag.appendChild(liTag);
+		}
+		document.getElementsByTagName('body')[0].appendChild(ulTag);
+	}																						//데이터 가져옴->어떤형식으로 가져올지는 EmpListJsonServlet.java
+			
+</script>
+</body>
+</html>

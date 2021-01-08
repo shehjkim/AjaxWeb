@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>홈입니다.</title>
+</head>
+<body>
+<h1>반갑습니다</h1>
+<div id=show></div>
+<script>
+		let xhtp = new XMLHttpRequest();
+		xhtp.open('get', 'home');
+		xhtp.send();
+		xhtp.onload = showContent;
+		
+		
+	
+		
+		function showContent() {
+				console.log(xhtp.responseXML);
+					let doc = xhtp.responseXML;
+					let result = doc.getElementsByTagName('record');
+					let tableTag = document.createElement('table');
+					tableTag.setAttribute('border', '1');
+					tableTag.append(createHeader(result[0]));
+					for (let i = 0; i < result.length; i++) {
+						let trTag = document.createElement('tr');
+						for (let j = 0; j < result[i].childNodes.length; j++) {
+							let tdTag = document.createElement('td');
+							let str = result[i].childNodes[j].childNodes[0].nodeValue;
+							let textNode = document.createTextNode(str);
+							tdTag.appendChild(textNode);
+							trTag.appendChild(tdTag);
+						}
+						tableTag.appendChild(trTag);
+					}
+					document.getElementById('show').appendChild(tableTag);
+
+				}
+		
+	       function createHeader(title) {
+               let trTag = document.createElement('tr');
+               for (let i = 0; i < title.childNodes.length; i++) {
+                   let tdTag = document.createElement('th');
+                   let str = title.childNodes[i].nodeName.toUpperCase().replace('_',' ');
+                   let textNode = document.createTextNode(str);
+                   tdTag.appendChild(textNode);
+                   trTag.appendChild(tdTag);
+               }
+               return trTag;
+           }
+	</script>
+</body>
+</html>

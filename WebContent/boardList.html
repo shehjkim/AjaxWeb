@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Board.html</title>
+<script src="html/showPage3.js"></script>
+</head>
+<body>
+	<div id="show"></div>
+	<table>
+			<td>글 번호</td>
+			<td><input type='text' id='fName' name='fName'></td>
+		<tr>
+		<tr>
+			<td>제목</td>
+			<td><input type='text' id='lName' name='lName'></td>
+		<tr>
+		<tr>
+			<td>내용</td>
+			<td><input type='email' id='email' name='email'></td>
+		<tr>
+		<tr>
+			<td>작가</td>
+			<td><input type='text' id='jobId' name='jobId'></td>
+		<tr>
+		<tr>
+			<td>발행일</td>
+			<td><input type='text' id='pNumber' name='pNumber'></td>
+
+		<tr>
+			<td><button id="updatebtn" onclick="updateBtn()";>수정</button></td>
+			<td><button id="addbtn" onclick="addBtn()";>등록</button></td>
+		</tr>
+	</table>
+	<script>
+		let xhtp = new XMLHttpRequest();
+		xhtp.open('get', '../ListBoardServ');
+		xhtp.send();
+		xhtp.onload = showPage;
+
+		function addBtn() {
+			let Title = document.querySelectorAll('input[name="Title"]')[0].value;
+			let Content = document.getElementById('Content').value;
+			let Writer = document.getElementById('Writer').value;
+			let insertReq = new XMLHttpRequest();
+			let url = '../insertBoard?Title=' + Title + '&Content=' + Content
+					+ '&Writer=' + Writer;
+			insertReq.open('get', url);
+			insertReq.send();
+			insertReq.onload = function() {
+				window.location.reload();
+			}
+		}
+		
+		function updateBtn() {
+			let updateTitle = document.getElementById('updateTitle').value;
+			let updateContent = document.getElementById('updateContent').value;
+			let updateWriter = document.getElementById('updateWriter').value;
+			let updateCreationDate = document.getElementById('updateCreationDate').value;
+			let updateBoardId= document.getElementById('updateBoardId').value;
+
+			let updateReq = new XMLHttpRequest();
+
+			let url = '../updateBoard?updateBoard_Id=' + updateBoard_Id 
+					+ '&updateTitle=' + updateTitle 
+					+ "&updateContent=" + updateContent 
+					+ "&updateWriter=" + updateWriter 
+					+ "&updateCreationDate="+ updateCreationDate;
+			console.log(url);
+			updateReq.open('get', url);
+			updateReq.send();
+			updateReq.onload = function() {
+				window.location.reload();
+			}
+		}
+		
+		document.getElementById('updateCreationDate').value = new Date().toISOString()
+		.substring(0, 10);
+	</script>
+</body>
+</html>
